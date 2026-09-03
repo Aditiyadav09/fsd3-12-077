@@ -7,3 +7,20 @@ one of the most important module in Node.js ,originally designed for building sc
 3. Build REST APIs
 4. Non-Blocking I/O
 5. Foundation of Express.js
+### NPM (node package manager)
+installs and uninstalls through managers
+ 
+ 
+ npm init -y -> project boilerplate
+
+npm i< package Name> -> install any package
+
+npm uninstall< package Name> -> unistalls packages
+
+- 200 -> OK
+- 201 -> Created
+- 400 -> Bad Requesr
+- 401 -> Unauthorised
+- 403 -> forbidden
+- 404 -> Not Found
+- 500 -> Internal Server Error
