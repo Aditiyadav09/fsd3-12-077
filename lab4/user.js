@@ -17,3 +17,10 @@ let nextId = 3;
 export function getUsers() {
   return users;
 }
+export const addUser = (user) => {
+    user.id =nextId++;
+    user.push(user);
+    return user;
+
+
+};
