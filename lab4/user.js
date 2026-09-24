@@ -14,9 +14,17 @@ let users = [
   },
 ];
 let nextId = 3;
-export function getUsers() {
+
+export const getAllUsers = () => {
   return users;
 }
+const getUserById = (pid) =>{
+ const found = users.find((user)=>user.id === pid)
+    return found;
+}
+
+
+
 export const addUser = (user) => {
     user.id =nextId++;
     user.push(user);
@@ -24,3 +32,22 @@ export const addUser = (user) => {
 
 
 };
+
+const updateUser = (pid,updateData) =>{
+  const index = user.findIndex((user)=>user.id === pid);
+  if (index == -1){
+    return false;
+  }
+  updateData.id = pid;
+  users[index] =updateData;
+  return updateData;
+
+}
+const deleteUser = (pid,) =>{
+  
+  const index = user.findIndex((user) => user.id === pid);
+  if (index == -1) {
+    return false;
+  }
+  users.splice(index,1);
+}
