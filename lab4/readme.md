@@ -1,7 +1,7 @@
 # NPM Project
 
 1. Go to project folder by command ` cd `.
-2. type `npm inti -y`.
+2. type `npm init -y`.
 3. open package.json.
 4. update `type:module`.
 5. install nodemon ` npm i nodemon -D`.
