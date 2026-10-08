@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduExcel Coaching | Empowering Future Leaders</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        },
+                        tealBrand: {
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #14b8a6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-bg {
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(20, 184, 166, 0.15), transparent 40%);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-brand-600 to-tealBrand-500 flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-brand-500/30">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-extrabold tracking-tight text-white">Edu<span class="gradient-text">Excel</span></span>
+                        <span class="block text-[10px] text-slate-400 font-medium tracking-widest uppercase -mt-1">Online Academy</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <button onclick="navigateTo('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all">Home</button>
+                    <button onclick="navigateTo('courses')" id="nav-courses" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all">Courses</button>
+                    <button onclick="navigateTo('about')" id="nav-about" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all">About Us</button>
+                    <button onclick="navigateTo('schedule')" id="nav-schedule" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all relative">
+                        Schedule
+                        <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tealBrand-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-3 w-3 bg-tealBrand-500"></span>
+                        </span>
+                    </button>
+                    <button onclick="navigateTo('contact')" id="nav-contact" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all">Contact</button>
+                </nav>
+
+                <!-- Desktop CTA Button -->
+                <div class="hidden md:flex items-center gap-4">
+                    <button onclick="openDemoModal()" class="px-5 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-brand-600 to-tealBrand-500 hover:from-brand-500 hover:to-tealBrand-400 text-white shadow-lg shadow-brand-600/20 transform hover:-translate-y-0.5 transition-all duration-200">
+                        <i class="fa-solid fa-calendar-check mr-2"></i>Book Free Demo
+                    </button>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white focus:outline-none p-2 rounded-lg bg-slate-800 border border-slate-700">
+                        <i id="menu-icon" class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900/95 border-b border-slate-800 px-4 pt-2 pb-6 space-y-3 backdrop-blur-xl">
+            <button onclick="navigateTo('home'); toggleMobileMenu()" class="mobile-nav-btn block w-full text-left px-4 py-3 rounded-xl text-base font-medium text-slate-300 hover:bg-slate-800">Home</button>
+            <button onclick="navigateTo('courses'); toggleMobileMenu()" class="mobile-nav-btn block w-full text-left px-4 py-3 rounded-xl text-base font-medium text-slate-300 hover:bg-slate-800">Courses</button>
+            <button onclick="navigateTo('about'); toggleMobileMenu()" class="mobile-nav-btn block w-full text-left px-4 py-3 rounded-xl text-base font-medium text-slate-300 hover:bg-slate-800">About Us</button>
+            <button onclick="navigateTo('schedule'); toggleMobileMenu()" class="mobile-nav-btn block w-full text-left px-4 py-3 rounded-xl text-base font-medium text-slate-300 hover:bg-slate-800">Live Schedule</button>
+            <button onclick="navigateTo('contact'); toggleMobileMenu()" class="mobile-nav-btn block w-full text-left px-4 py-3 rounded-xl text-base font-medium text-slate-300 hover:bg-slate-800">Contact & Support</button>
+            <div class="pt-2">
+                <button onclick="openDemoModal(); toggleMobileMenu()" class="w-full py-3 rounded-xl text-center font-bold bg-gradient-to-r from-brand-600 to-tealBrand-500 text-white shadow-lg">
+                    Book Free Demo Class
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow hero-bg">
+
+        <!-- ================= PAGE 1: HOME ================= -->
+        <section id="page-home" class="page-content">
+            <!-- Hero Banner -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-500 text-xs sm:text-sm font-semibold">
+                            <span class="flex h-2 w-2 rounded-full bg-brand-500"></span>
+                            Admissions Open for Academic Year 2026-27
+                        </div>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                            Master Your Future with <span class="gradient-text">Top-Tier Coaching</span>
+                        </h1>
+                        <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0">
+                            Interactive live classes, personalized mentorship, and comprehensive test series for Class 9-12, JEE, NEET, and Foundation Coding courses.
+                        </p>
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                            <button onclick="navigateTo('courses')" class="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-bold bg-brand-600 hover:bg-brand-500 text-white shadow-xl shadow-brand-600/30 transition-all flex items-center justify-center gap-2">
+                                Explore Courses <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <button onclick="openDemoModal()" class="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-play text-tealBrand-400"></i> Free Trial Demo
+                            </button>
+                        </div>
+                        <div class="pt-6 flex items-center justify-center lg:justify-start gap-6 text-slate-400 text-sm">
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-check text-tealBrand-400"></i> Live Interactive</span>
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-check text-tealBrand-400"></i> 1-on-1 Doubts</span>
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-check text-tealBrand-400"></i> Recorded Backups</span>
+                        </div>
+                    </div>
+
+                    <!-- Hero Visual Card -->
+                    <div class="relative">
+                        <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-brand-600 to-tealBrand-500 blur-xl opacity-30 animate-pulse"></div>
+                        <div class="relative rounded-2xl bg-slate-800/90 border border-slate-700 p-6 shadow-2xl">
+                            <div class="flex items-center justify-between border-b border-slate-700/60 pb-4 mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                    <span class="text-xs text-slate-400 ml-2 font-mono">Live Interactive Classroom</span>
+                                </div>
+                                <span class="bg-red-500/20 text-red-400 text-xs px-2.5 py-1 rounded-full font-bold flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span> LIVE NOW
+                                </span>
+                            </div>
+                            <div class="relative rounded-xl overflow-hidden bg-slate-900 border border-slate-800 aspect-video flex items-center justify-center group cursor-pointer" onclick="openDemoModal()">
+                                <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80" alt="Live Class" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-all duration-500">
+                                <div class="absolute inset-0 bg-slate-950/40 flex flex-col items-center justify-center gap-3">
+                                    <div class="w-16 h-16 rounded-full bg-brand-600/90 text-white flex items-center justify-center text-2xl shadow-xl group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-play ml-1"></i>
+                                    </div>
+                                    <span class="text-sm font-semibold text-white tracking-wide bg-slate-900/80 px-4 py-1.5 rounded-full border border-slate-700">Preview Class: Organic Chemistry Masterclass</span>
+                                </div>
+                            </div>
+                            <!-- Mini Live Chat Mock -->
+                            <div class="mt-4 p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-xs space-y-2">
+                                <div class="flex items-center justify-between text-slate-400">
+                                    <span><strong class="text-brand-400">Prof. Sharma:</strong> Does everyone understand the Benzene resonance structure?</span>
+                                    <span class="text-[10px]">Just now</span>
+                                </div>
+                                <div class="flex items-center justify-between text-slate-300">
+                                    <span><strong class="text-tealBrand-400">Aarav M.:</strong> Yes Sir, clear! Can we solve problem 4 next?</span>
+                                    <span class="text-[10px]">Just now</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Counter Bar -->
+            <div class="border-y border-slate-800 bg-slate-950/50 py-12">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div>
+                        <div class="text-3xl sm:text-4xl font-extrabold text-white gradient-text">15,000+</div>
+                        <div class="text-sm text-slate-400 mt-1">Students Enrolled</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl sm:text-4xl font-extrabold text-white gradient-text">98.4%</div>
+                        <div class="text-sm text-slate-400 mt-1">Board Exam Success</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl sm:text-4xl font-extrabold text-white gradient-text">1,200+</div>
+                        <div class="text-sm text-slate-400 mt-1">JEE / NEET Rankers</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl sm:text-4xl font-extrabold text-white gradient-text">50+</div>
+                        <div class="text-sm text-slate-400 mt-1">Expert IITian/Doctor Faculty</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Highlights Grid -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-3xl font-extrabold text-white sm:text-4xl">Why Choose <span class="gradient-text">EduExcel Academy</span>?</h2>
+                    <p class="text-slate-400 mt-3">We combine technology, top faculty, and student-first methodologies to produce outstanding academic outcomes.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="p-8 rounded-2xl bg-slate-800/50 border border-slate-700/60 hover:border-brand-500/50 transition-all group">
+                        <div class="w-14 h-14 rounded-xl bg-brand-500/10 text-brand-400 flex items-center justify-center text-2xl mb-6 group-hover:bg-brand-600 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Live 2-Way Interactive Classes</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Ask questions verbally or via chat, clear doubts instantly, and engage in real-time quizzes during live sessions.</p>
+                    </div>
+
+                    <div class="p-8 rounded-2xl bg-slate-800/50 border border-slate-700/60 hover:border-tealBrand-500/50 transition-all group">
+                        <div class="w-14 h-14 rounded-xl bg-tealBrand-500/10 text-tealBrand-400 flex items-center justify-center text-2xl mb-6 group-hover:bg-tealBrand-500 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-headset"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Dedicated Doubt Clearance</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">24/7 access to doubt resolution portals with scheduled 1-on-1 mentor sessions to ensure no topic remains confusing.</p>
+                    </div>
+
+                    <div class="p-8 rounded-2xl bg-slate-800/50 border border-slate-700/60 hover:border-brand-500/50 transition-all group">
+                        <div class="w-14 h-14 rounded-xl bg-brand-500/10 text-brand-400 flex items-center justify-center text-2xl mb-6 group-hover:bg-brand-600 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">AI Mock Test Analytics</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">Deep performance analytics pinpointing weak concepts, time management flaws, and comparative rank analysis.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials Carousel/Grid -->
+            <div class="bg-slate-950/60 py-20 border-t border-slate-800">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto mb-16">
+                        <span class="text-brand-400 text-sm font-bold uppercase tracking-wider">Success Stories</span>
+                        <h2 class="text-3xl font-extrabold text-white sm:text-4xl mt-2">Loved by Students & Parents</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 relative">
+                            <div class="flex items-center gap-1 text-amber-400 mb-4">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="text-slate-300 text-sm italic mb-6">"EduExcel changed my JEE preparation completely. The faculty's shortcuts in Physics helped me secure AIR 342!"</p>
+                            <div class="flex items-center gap-4">
+                                <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=150&q=80" class="w-12 h-12 rounded-full object-cover" alt="Student">
+                                <div>
+                                    <h4 class="text-white font-bold text-sm">Rohan Verma</h4>
+                                    <p class="text-slate-500 text-xs">JEE Advanced 2025 (AIR 342)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 relative">
+                            <div class="flex items-center gap-1 text-amber-400 mb-4">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="text-slate-300 text-sm italic mb-6">"The Class 10 Foundation batch made Science so intuitive. Scored 98.2% in my board exams thanks to regular mock tests!"</p>
+                            <div class="flex items-center gap-4">
+                                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" class="w-12 h-12 rounded-full object-cover" alt="Student">
+                                <div>
+                                    <h4 class="text-white font-bold text-sm">Ananya Gupta</h4>
+                                    <p class="text-slate-500 text-xs">Class 10 CBSE Board Topper</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 relative">
+                            <div class="flex items-center gap-1 text-amber-400 mb-4">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="text-slate-300 text-sm italic mb-6">"The 1-on-1 counseling and test analysis gave my daughter immense confidence for NEET. Truly outstanding teachers!"</p>
+                            <div class="flex items-center gap-4">
+                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80" class="w-12 h-12 rounded-full object-cover" alt="Parent">
+                                <div>
+                                    <h4 class="text-white font-bold text-sm">Sunita Sharma</h4>
+                                    <p class="text-slate-500 text-xs">Parent of NEET Aspirant</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Inquiry Banner CTA -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="rounded-3xl bg-gradient-to-r from-brand-900/90 via-brand-700/80 to-tealBrand-600/80 p-8 md:p-12 border border-brand-500/30 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="space-y-2 text-center md:text-left z-10">
+                        <h3 class="text-2xl sm:text-3xl font-extrabold text-white">Ready to Boost Your Academic Rank?</h3>
+                        <p class="text-brand-100 text-sm sm:text-base">Join our upcoming batch and get 20% early-bird discount on yearly programs.</p>
+                    </div>
+                    <div class="flex items-center gap-4 z-10">
+                        <button onclick="navigateTo('courses')" class="px-6 py-3.5 rounded-xl bg-white text-slate-900 font-bold hover:bg-slate-100 shadow-xl transition-all">View Courses</button>
+                        <button onclick="openDemoModal()" class="px-6 py-3.5 rounded-xl bg-slate-900/60 hover:bg-slate-900 text-white font-bold border border-white/20 transition-all">Get Callback</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: COURSES CATALOG ================= -->
+        <section id="page-courses" class="page-content hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center max-w-3xl mx-auto mb-10">
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Explore Our <span class="gradient-text">Coaching Programs</span></h1>
+                    <p class="text-slate-400 mt-2">Comprehensive curriculum designed by top educators tailored for exam excellence.</p>
+                </div>
+
+                <!-- Course Filters -->
+                <div class="flex flex-wrap justify-center gap-3 mb-12">
+                    <button onclick="filterCourses('all')" class="course-filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all bg-brand-600 text-white" data-category="all">All Programs</button>
+                    <button onclick="filterCourses('jee-neet')" class="course-filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700" data-category="jee-neet">JEE / NEET Entrance</button>
+                    <button onclick="filterCourses('class-9-10')" class="course-filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700" data-category="class-9-10">Class 9 & 10 Boards</button>
+                    <button onclick="filterCourses('class-11-12')" class="course-filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700" data-category="class-11-12">Class 11 & 12 Boards</button>
+                    <button onclick="filterCourses('coding')" class="course-filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700" data-category="coding">Foundation & Coding</button>
+                </div>
+
+                <!-- Courses Grid -->
+                <div id="courses-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Course Item 1 -->
+                    <div class="course-card bg-slate-800/60 rounded-2xl border border-slate-700/70 overflow-hidden hover:border-brand-500/50 transition-all flex flex-col justify-between" data-category="jee-neet">
+                        <div>
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=600&q=80" alt="JEE Mastery" class="w-full h-full object-cover">
+                                <span class="absolute top-3 right-3 bg-brand-600 text-white text-xs px-3 py-1 rounded-full font-bold">Class 11 & 12</span>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 text-amber-400 text-xs font-semibold mb-2">
+                                    <i class="fa-solid fa-star"></i> 4.9 (420+ Reviews)
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-2">JEE Main & Advanced Mastery Batch</h3>
+                                <p class="text-slate-400 text-sm mb-4 line-clamp-2">Complete Physics, Chemistry, and Mathematics curriculum with 100+ full-length mock tests and Ranker's Problem Sheets.</p>
+                                <div class="flex items-center gap-4 text-xs text-slate-400 mb-4 border-y border-slate-700/50 py-3">
+                                    <span><i class="fa-regular fa-clock mr-1 text-brand-400"></i> 1 Year Program</span>
+                                    <span><i class="fa-solid fa-video mr-1 text-brand-400"></i> 400+ Live Hours</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-0 flex items-center justify-between gap-4">
+                            <div>
+                                <span class="text-xs text-slate-500 line-through">₹45,000</span>
+                                <div class="text-2xl font-extrabold text-white">₹32,999</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="openSyllabusModal('JEE Main & Advanced')" class="p-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold" title="View Syllabus">
+                                    <i class="fa-solid fa-book-open"></i>
+                                </button>
+                                <button onclick="openEnrollModal('JEE Main & Advanced Mastery', '₹32,999')" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition-all">
+                                    Enroll Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Item 2 -->
+                    <div class="course-card bg-slate-800/60 rounded-2xl border border-slate-700/70 overflow-hidden hover:border-brand-500/50 transition-all flex flex-col justify-between" data-category="jee-neet">
+                        <div>
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" alt="NEET Biology" class="w-full h-full object-cover">
+                                <span class="absolute top-3 right-3 bg-tealBrand-500 text-white text-xs px-3 py-1 rounded-full font-bold">Class 11 & 12</span>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 text-amber-400 text-xs font-semibold mb-2">
+                                    <i class="fa-solid fa-star"></i> 4.9 (510+ Reviews)
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-2">NEET UG Target Achievers Batch</h3>
+                                <p class="text-slate-400 text-sm mb-4 line-clamp-2">NCERT line-by-line decoding in Biology, numerical practice in Physics, and Organic Chemistry mechanisms.</p>
+                                <div class="flex items-center gap-4 text-xs text-slate-400 mb-4 border-y border-slate-700/50 py-3">
+                                    <span><i class="fa-regular fa-clock mr-1 text-tealBrand-400"></i> 1 Year Program</span>
+                                    <span><i class="fa-solid fa-video mr-1 text-tealBrand-400"></i> 450+ Live Hours</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-0 flex items-center justify-between gap-4">
+                            <div>
+                                <span class="text-xs text-slate-500 line-through">₹42,000</span>
+                                <div class="text-2xl font-extrabold text-white">₹29,999</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="openSyllabusModal('NEET UG Target Achievers')" class="p-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold">
+                                    <i class="fa-solid fa-book-open"></i>
+                                </button>
+                                <button onclick="openEnrollModal('NEET UG Target Achievers', '₹29,999')" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition-all">
+                                    Enroll Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Item 3 -->
+                    <div class="course-card bg-slate-800/60 rounded-2xl border border-slate-700/70 overflow-hidden hover:border-brand-500/50 transition-all flex flex-col justify-between" data-category="class-9-10">
+                        <div>
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80" alt="Class 10 Foundation" class="w-full h-full object-cover">
+                                <span class="absolute top-3 right-3 bg-purple-600 text-white text-xs px-3 py-1 rounded-full font-bold">Class 10 CBSE/ICSE</span>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 text-amber-400 text-xs font-semibold mb-2">
+                                    <i class="fa-solid fa-star"></i> 4.8 (380+ Reviews)
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-2">Class 10 Board Excellence + NTSE</h3>
+                                <p class="text-slate-400 text-sm mb-4 line-clamp-2">Complete Maths, Science, English & Social Studies coaching with NTSE and Olympiad foundation building.</p>
+                                <div class="flex items-center gap-4 text-xs text-slate-400 mb-4 border-y border-slate-700/50 py-3">
+                                    <span><i class="fa-regular fa-clock mr-1 text-brand-400"></i> Full Academic Year</span>
+                                    <span><i class="fa-solid fa-video mr-1 text-brand-400"></i> 300+ Live Hours</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-0 flex items-center justify-between gap-4">
+                            <div>
+                                <span class="text-xs text-slate-500 line-through">₹25,000</span>
+                                <div class="text-2xl font-extrabold text-white">₹18,499</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="openSyllabusModal('Class 10 Board Excellence')" class="p-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold">
+                                    <i class="fa-solid fa-book-open"></i>
+                                </button>
+                                <button onclick="openEnrollModal('Class 10 Board Excellence', '₹18,499')" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition-all">
+                                    Enroll Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Item 4 -->
+                    <div class="course-card bg-slate-800/60 rounded-2xl border border-slate-700/70 overflow-hidden hover:border-brand-500/50 transition-all flex flex-col justify-between" data-category="coding">
+                        <div>
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80" alt="Coding for Teens" class="w-full h-full object-cover">
+                                <span class="absolute top-3 right-3 bg-emerald-600 text-white text-xs px-3 py-1 rounded-full font-bold">Class 8-12</span>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 text-amber-400 text-xs font-semibold mb-2">
+                                    <i class="fa-solid fa-star"></i> 4.9 (290+ Reviews)
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-2">Python & Web Dev Bootcamp</h3>
+                                <p class="text-slate-400 text-sm mb-4 line-clamp-2">Learn Python fundamentals, HTML/CSS/JS, algorithms, and build 10 real-world projects from scratch.</p>
+                                <div class="flex items-center gap-4 text-xs text-slate-400 mb-4 border-y border-slate-700/50 py-3">
+                                    <span><i class="fa-regular fa-clock mr-1 text-tealBrand-400"></i> 6 Months</span>
+                                    <span><i class="fa-solid fa-laptop-code mr-1 text-tealBrand-400"></i> Hands-on Labs</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-0 flex items-center justify-between gap-4">
+                            <div>
+                                <span class="text-xs text-slate-500 line-through">₹20,000</span>
+                                <div class="text-2xl font-extrabold text-white">₹14,999</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="openSyllabusModal('Python & Web Dev')" class="p-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold">
+                                    <i class="fa-solid fa-book-open"></i>
+                                </button>
+                                <button onclick="openEnrollModal('Python & Web Dev Bootcamp', '₹14,999')" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition-all">
+                                    Enroll Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Item 5 -->
+                    <div class="course-card bg-slate-800/60 rounded-2xl border border-slate-700/70 overflow-hidden hover:border-brand-500/50 transition-all flex flex-col justify-between" data-category="class-11-12">
+                        <div>
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80" alt="Class 12 Boards" class="w-full h-full object-cover">
+                                <span class="absolute top-3 right-3 bg-indigo-600 text-white text-xs px-3 py-1 rounded-full font-bold">Class 12</span>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 text-amber-400 text-xs font-semibold mb-2">
+                                    <i class="fa-solid fa-star"></i> 4.7 (310+ Reviews)
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-2">Class 12 Science Board Booster</h3>
+                                <p class="text-slate-400 text-sm mb-4 line-clamp-2">Target 95%+ in Class 12 Boards with intensive sample paper practice, derivation guides, and answer writing drills.</p>
+                                <div class="flex items-center gap-4 text-xs text-slate-400 mb-4 border-y border-slate-700/50 py-3">
+                                    <span><i class="fa-regular fa-clock mr-1 text-brand-400"></i> 8 Months Batch</span>
+                                    <span><i class="fa-solid fa-file-signature mr-1 text-brand-400"></i> Board Test Series</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-0 flex items-center justify-between gap-4">
+                            <div>
+                                <span class="text-xs text-slate-500 line-through">₹28,000</span>
+                                <div class="text-2xl font-extrabold text-white">₹21,000</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="openSyllabusModal('Class 12 Science Board')" class="p-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold">
+                                    <i class="fa-solid fa-book-open"></i>
+                                </button>
+                                <button onclick="openEnrollModal('Class 12 Science Board Booster', '₹21,000')" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition-all">
+                                    Enroll Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Item 6 -->
+                    <div class="course-card bg-slate-800/60 rounded-2xl border border-slate-700/70 overflow-hidden hover:border-brand-500/50 transition-all flex flex-col justify-between" data-category="coding">
+                        <div>
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80" alt="Data Structures" class="w-full h-full object-cover">
+                                <span class="absolute top-3 right-3 bg-pink-600 text-white text-xs px-3 py-1 rounded-full font-bold">Advanced</span>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 text-amber-400 text-xs font-semibold mb-2">
+                                    <i class="fa-solid fa-star"></i> 4.9 (150+ Reviews)
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-2">Data Structures & Algorithms (DSA)</h3>
+                                <p class="text-slate-400 text-sm mb-4 line-clamp-2">Master arrays, trees, graphs, dynamic programming, and problem solving in C++ / Java for olympiads & college prep.</p>
+                                <div class="flex items-center gap-4 text-xs text-slate-400 mb-4 border-y border-slate-700/50 py-3">
+                                    <span><i class="fa-regular fa-clock mr-1 text-tealBrand-400"></i> 4 Months</span>
+                                    <span><i class="fa-solid fa-code mr-1 text-tealBrand-400"></i> 200+ Problems</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-0 flex items-center justify-between gap-4">
+                            <div>
+                                <span class="text-xs text-slate-500 line-through">₹18,000</span>
+                                <div class="text-2xl font-extrabold text-white">₹12,999</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="openSyllabusModal('Data Structures & Algorithms')" class="p-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold">
+                                    <i class="fa-solid fa-book-open"></i>
+                                </button>
+                                <button onclick="openEnrollModal('Data Structures & Algorithms', '₹12,999')" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition-all">
+                                    Enroll Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: ABOUT US ================= -->
+        <section id="page-about" class="page-content hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <!-- Mission Vision Section -->
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-brand-400 text-sm font-bold uppercase tracking-wider">Our Heritage & Mission</span>
+                    <h1 class="text-4xl font-extrabold text-white mt-2">Revolutionizing Online Education for Every Student</h1>
+                    <p class="text-slate-400 mt-4 leading-relaxed">
+                        Founded in 2018, EduExcel Academy has helped over 15,000 students crack competitive entrance exams and board finals through tech-driven personalized learning.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-20">
+                    <div class="p-8 rounded-2xl bg-slate-800/60 border border-slate-700/80">
+                        <div class="w-12 h-12 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Our Mission</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            To bridge the gap between quality education and aspiring students across the globe by offering affordable, top-quality live coaching and mentorship.
+                        </p>
+                    </div>
+                    <div class="p-8 rounded-2xl bg-slate-800/60 border border-slate-700/80">
+                        <div class="w-12 h-12 rounded-xl bg-tealBrand-500/20 text-tealBrand-400 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-eye"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Our Vision</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            To become the world's most trusted online learning ecosystem that empowers every student to realize their fullest academic potential.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Faculty Profiles -->
+                <div class="mb-20">
+                    <div class="text-center max-w-2xl mx-auto mb-12">
+                        <h2 class="text-3xl font-extrabold text-white">Meet Our Master Faculty</h2>
+                        <p class="text-slate-400 mt-2">Learn directly from IITians, Doctors, and Industry Veterans.</p>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Faculty 1 -->
+                        <div class="p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 text-center hover:border-brand-500/50 transition-all">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=300&q=80" class="w-24 h-24 rounded-full object-cover mx-auto mb-4 border-2 border-brand-500" alt="Faculty">
+                            <h4 class="text-lg font-bold text-white">Dr. Rajesh Khanna</h4>
+                            <p class="text-brand-400 text-xs font-semibold mb-2">Head of Physics (Ex-IIT Delhi)</p>
+                            <p class="text-slate-400 text-xs">15+ years experience mentor to 50+ Top 100 JEE Rankers.</p>
+                        </div>
+                        <!-- Faculty 2 -->
+                        <div class="p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 text-center hover:border-tealBrand-500/50 transition-all">
+                            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=300&q=80" class="w-24 h-24 rounded-full object-cover mx-auto mb-4 border-2 border-tealBrand-500" alt="Faculty">
+                            <h4 class="text-lg font-bold text-white">Dr. Meera Nambiar</h4>
+                            <p class="text-tealBrand-400 text-xs font-semibold mb-2">Head of Biology (AIIMS Alumna)</p>
+                            <p class="text-slate-400 text-xs">Author of 3 NEET prep books with 12+ years teaching mastery.</p>
+                        </div>
+                        <!-- Faculty 3 -->
+                        <div class="p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 text-center hover:border-brand-500/50 transition-all">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" class="w-24 h-24 rounded-full object-cover mx-auto mb-4 border-2 border-brand-500" alt="Faculty">
+                            <h4 class="text-lg font-bold text-white">Prof. Sneha Kulkarni</h4>
+                            <p class="text-brand-400 text-xs font-semibold mb-2">Senior Organic Chemistry Expert</p>
+                            <p class="text-slate-400 text-xs">Known for shortcut memory tricks and interactive mechanism maps.</p>
+                        </div>
+                        <!-- Faculty 4 -->
+                        <div class="p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 text-center hover:border-tealBrand-500/50 transition-all">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" class="w-24 h-24 rounded-full object-cover mx-auto mb-4 border-2 border-tealBrand-500" alt="Faculty">
+                            <h4 class="text-lg font-bold text-white">Vikramaditya Roy</h4>
+                            <p class="text-tealBrand-400 text-xs font-semibold mb-2">Head of CS & Coding</p>
+                            <p class="text-slate-400 text-xs">Ex-Senior Software Engineer at top tech enterprise with 8+ yrs teaching experience.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Methodology Process -->
+                <div class="bg-slate-950/60 rounded-3xl p-8 md:p-12 border border-slate-800">
+                    <h2 class="text-3xl font-extrabold text-white text-center mb-12">4-Step Winning Methodology</h2>
+                    <div class="grid md:grid-cols-4 gap-6">
+                        <div class="relative text-center">
+                            <div class="w-12 h-12 rounded-full bg-brand-600 text-white font-extrabold text-lg flex items-center justify-center mx-auto mb-4">1</div>
+                            <h4 class="text-white font-bold mb-2">Interactive Concept Class</h4>
+                            <p class="text-slate-400 text-xs">Live 2-way lectures with visual animations and real-world applications.</p>
+                        </div>
+                        <div class="relative text-center">
+                            <div class="w-12 h-12 rounded-full bg-brand-600 text-white font-extrabold text-lg flex items-center justify-center mx-auto mb-4">2</div>
+                            <h4 class="text-white font-bold mb-2">Daily Practice Sheets</h4>
+                            <p class="text-slate-400 text-xs">Graded DPPs after every class with step-by-step video solutions.</p>
+                        </div>
+                        <div class="relative text-center">
+                            <div class="w-12 h-12 rounded-full bg-brand-600 text-white font-extrabold text-lg flex items-center justify-center mx-auto mb-4">3</div>
+                            <h4 class="text-white font-bold mb-2">AI-Powered Mock Tests</h4>
+                            <p class="text-slate-400 text-xs">Simulated entrance exam platform with detailed time analytics.</p>
+                        </div>
+                        <div class="relative text-center">
+                            <div class="w-12 h-12 rounded-full bg-tealBrand-500 text-white font-extrabold text-lg flex items-center justify-center mx-auto mb-4">4</div>
+                            <h4 class="text-white font-bold mb-2">1-on-1 Mentorship</h4>
+                            <p class="text-slate-400 text-xs">Personal guidance sessions to manage stress and boost performance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: SCHEDULE & LIVE CLASSES ================= -->
+        <section id="page-schedule" class="page-content hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Live Classes & <span class="gradient-text">Timetable</span></h1>
+                    <p class="text-slate-400 mt-2">Check scheduled masterclasses and access recent recorded lectures.</p>
+                </div>
+
+                <!-- Interactive Filters for Timetable -->
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-8 bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60">
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm text-slate-400 font-semibold">Select Day:</span>
+                        <select id="day-filter" onchange="filterSchedule()" class="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-brand-500">
+                            <option value="today">Today (Live)</option>
+                            <option value="tomorrow">Tomorrow</option>
+                            <option value="all">Full Week</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm text-slate-400 font-semibold">Target Batch:</span>
+                        <select id="batch-filter" onchange="filterSchedule()" class="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-brand-500">
+                            <option value="all">All Batches</option>
+                            <option value="jee">JEE Advanced</option>
+                            <option value="neet">NEET Biology</option>
+                            <option value="class10">Class 10 Board</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Timetable Schedule List -->
+                <div id="schedule-list" class="space-y-4 mb-16">
+                    <!-- Schedule Item 1 -->
+                    <div class="schedule-item p-6 rounded-2xl bg-slate-800/80 border border-slate-700 flex flex-col md:flex-row items-start md:items-center justify-between gap-6" data-day="today" data-batch="jee">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 flex flex-col items-center justify-center font-bold">
+                                <span class="text-xs uppercase">NOW</span>
+                                <span class="text-base">LIVE</span>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-3 mb-1">
+                                    <span class="text-xs px-2.5 py-0.5 rounded bg-brand-500/20 text-brand-400 font-semibold">JEE Advanced</span>
+                                    <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 05:00 PM - 06:30 PM</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-white">Electrostatics & Capacitance Numerical Solving</h3>
+                                <p class="text-slate-400 text-xs">Faculty: Dr. Rajesh Khanna</p>
+                            </div>
+                        </div>
+                        <button onclick="openLiveDemoModal('Electrostatics & Capacitance', 'Dr. Rajesh Khanna')" class="w-full md:w-auto px-6 py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm shadow-lg shadow-red-600/30 flex items-center justify-center gap-2 animate-pulse">
+                            <i class="fa-solid fa-video"></i> Join Live Class
+                        </button>
+                    </div>
+
+                    <!-- Schedule Item 2 -->
+                    <div class="schedule-item p-6 rounded-2xl bg-slate-800/80 border border-slate-700 flex flex-col md:flex-row items-start md:items-center justify-between gap-6" data-day="today" data-batch="neet">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-slate-700 text-slate-300 flex flex-col items-center justify-center font-bold">
+                                <span class="text-xs">UPCOMING</span>
+                                <span class="text-sm">07:00 PM</span>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-3 mb-1">
+                                    <span class="text-xs px-2.5 py-0.5 rounded bg-tealBrand-500/20 text-tealBrand-400 font-semibold">NEET Biology</span>
+                                    <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 07:00 PM - 08:30 PM</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-white">Human Physiology: Neural Control & Coordination</h3>
+                                <p class="text-slate-400 text-xs">Faculty: Dr. Meera Nambiar</p>
+                            </div>
+                        </div>
+                        <button onclick="showToast('Class reminder set successfully!', 'info')" class="w-full md:w-auto px-6 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-sm flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-bell"></i> Set Reminder
+                        </button>
+                    </div>
+
+                    <!-- Schedule Item 3 -->
+                    <div class="schedule-item p-6 rounded-2xl bg-slate-800/80 border border-slate-700 flex flex-col md:flex-row items-start md:items-center justify-between gap-6" data-day="tomorrow" data-batch="class10">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-slate-700 text-slate-300 flex flex-col items-center justify-center font-bold">
+                                <span class="text-xs">TOMORROW</span>
+                                <span class="text-sm">04:30 PM</span>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-3 mb-1">
+                                    <span class="text-xs px-2.5 py-0.5 rounded bg-purple-500/20 text-purple-400 font-semibold">Class 10 Board</span>
+                                    <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 04:30 PM - 06:00 PM</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-white">Quadratic Equations & AP Problem Sprint</h3>
+                                <p class="text-slate-400 text-xs">Faculty: Prof. Sneha Kulkarni</p>
+                            </div>
+                        </div>
+                        <button onclick="showToast('Reminder added to Google Calendar!', 'success')" class="w-full md:w-auto px-6 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-sm flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-calendar-plus"></i> Add to Calendar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recorded Lectures Archive Preview -->
+                <div>
+                    <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-circle-play text-brand-400"></i> Recorded Lecture Archives
+                    </h2>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="p-4 rounded-2xl bg-slate-800/40 border border-slate-700 hover:border-brand-500/50 transition-all cursor-pointer" onclick="openLiveDemoModal('Vectors & Kinematics Backup', 'Dr. Rajesh Khanna')">
+                            <div class="relative rounded-xl overflow-hidden aspect-video mb-3">
+                                <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover" alt="Recorded">
+                                <span class="absolute bottom-2 right-2 bg-slate-900/90 text-xs px-2 py-1 rounded text-white font-mono">1h 24m</span>
+                            </div>
+                            <h4 class="text-white font-bold text-sm line-clamp-1">Vectors & 2D Kinematics Deep Dive</h4>
+                            <p class="text-slate-400 text-xs mt-1">Recorded on Yesterday • Physics</p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-slate-800/40 border border-slate-700 hover:border-brand-500/50 transition-all cursor-pointer" onclick="openLiveDemoModal('Chemical Bonding Crash Course', 'Prof. Sneha Kulkarni')">
+                            <div class="relative rounded-xl overflow-hidden aspect-video mb-3">
+                                <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover" alt="Recorded">
+                                <span class="absolute bottom-2 right-2 bg-slate-900/90 text-xs px-2 py-1 rounded text-white font-mono">1h 45m</span>
+                            </div>
+                            <h4 class="text-white font-bold text-sm line-clamp-1">Chemical Bonding & Molecular Structure</h4>
+                            <p class="text-slate-400 text-xs mt-1">Recorded 2 days ago • Chemistry</p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-slate-800/40 border border-slate-700 hover:border-brand-500/50 transition-all cursor-pointer" onclick="openLiveDemoModal('Python Functions & OOPs', 'Vikramaditya Roy')">
+                            <div class="relative rounded-xl overflow-hidden aspect-video mb-3">
+                                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover" alt="Recorded">
+                                <span class="absolute bottom-2 right-2 bg-slate-900/90 text-xs px-2 py-1 rounded text-white font-mono">2h 05m</span>
+                            </div>
+                            <h4 class="text-white font-bold text-sm line-clamp-1">Python OOPs Concepts & Coding Drills</h4>
+                            <p class="text-slate-400 text-xs mt-1">Recorded 3 days ago • Coding</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 5: CONTACT & SUPPORT ================= -->
+        <section id="page-contact" class="page-content hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Contact & <span class="gradient-text">Counseling Support</span></h1>
+                    <p class="text-slate-400 mt-2">Have questions? Reach out to our academic advisors or visit our center.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-12 mb-16">
+                    <!-- Contact Form -->
+                    <div class="p-8 rounded-3xl bg-slate-800/60 border border-slate-700 shadow-xl">
+                        <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane text-brand-400"></i> Send Us a Message
+                        </h3>
+                        <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name *</label>
+                                <input type="text" id="contact-name" required placeholder="e.g. Rahul Sharma" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-500">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address *</label>
+                                    <input type="email" id="contact-email" required placeholder="name@domain.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Phone Number *</label>
+                                    <input type="tel" id="contact-phone" required placeholder="+91 98765 43210" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-500">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Target Course Interest</label>
+                                <select id="contact-course" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-500">
+                                    <option value="JEE Prep">JEE Main & Advanced</option>
+                                    <option value="NEET Prep">NEET UG Medical</option>
+                                    <option value="Class 10 Board">Class 9/10 Foundation</option>
+                                    <option value="Coding">Python & Web Coding</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Your Message / Query *</label>
+                                <textarea id="contact-message" rows="4" required placeholder="Tell us how we can help you..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-500"></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm shadow-lg shadow-brand-600/30 transition-all">
+                                Send Inquiry Message
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Direct Contact Details & 1-on-1 Counseling -->
+                    <div class="space-y-8 flex flex-col justify-between">
+                        <div class="space-y-6">
+                            <div class="p-6 rounded-2xl bg-slate-800/40 border border-slate-700 flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-brand-500/10 text-brand-400 flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-bold text-base">Headquarters & Experience Center</h4>
+                                    <p class="text-slate-400 text-sm mt-1">EduExcel Tower, Knowledge Park II, Greater Noida, Delhi NCR - 201310</p>
+                                </div>
+                            </div>
+
+                            <div class="p-6 rounded-2xl bg-slate-800/40 border border-slate-700 flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-tealBrand-500/10 text-tealBrand-400 flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-bold text-base">Call Toll Free Helpline</h4>
+                                    <p class="text-slate-400 text-sm mt-1">+91 1800-200-9988 / +91 98123 45678</p>
+                                    <p class="text-slate-500 text-xs mt-0.5">Mon - Sat: 9:00 AM - 8:00 PM IST</p>
+                                </div>
+                            </div>
+
+                            <div class="p-6 rounded-2xl bg-slate-800/40 border border-slate-700 flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-bold text-base">Email Support</h4>
+                                    <p class="text-slate-400 text-sm mt-1">admissions@eduexcel.edu.in</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 1-on-1 Counseling Card -->
+                        <div class="p-6 rounded-2xl bg-gradient-to-r from-brand-900/60 to-tealBrand-900/60 border border-brand-500/30">
+                            <h4 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-user-doctor mr-2 text-tealBrand-400"></i>Book Free 1-on-1 Career Counseling</h4>
+                            <p class="text-slate-300 text-xs mb-4">Confused between Engineering, Medical, or Tech? Talk with our senior academic counselors for personalized guidance.</p>
+                            <button onclick="openDemoModal()" class="w-full py-2.5 rounded-xl bg-tealBrand-500 hover:bg-tealBrand-400 text-slate-950 font-extrabold text-xs tracking-wide">
+                                Reserve Counselor Slot
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Accordion -->
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-extrabold text-white text-center mb-8">Frequently Asked Questions</h2>
+                    <div class="space-y-4">
+                        <div class="rounded-2xl bg-slate-800/60 border border-slate-700 overflow-hidden">
+                            <button onclick="toggleFaq(1)" class="w-full p-5 text-left font-bold text-white flex justify-between items-center">
+                                <span>How do live interactive classes work?</span>
+                                <i id="faq-icon-1" class="fa-solid fa-chevron-down transition-transform"></i>
+                            </button>
+                            <div id="faq-answer-1" class="hidden px-5 pb-5 text-slate-400 text-sm">
+                                Students join live sessions through our desktop or mobile portal. They can raise their hand to ask audio questions, post doubts in chat, and participate in real-time quiz polls.
+                            </div>
+                        </div>
+
+                        <div class="rounded-2xl bg-slate-800/60 border border-slate-700 overflow-hidden">
+                            <button onclick="toggleFaq(2)" class="w-full p-5 text-left font-bold text-white flex justify-between items-center">
+                                <span>What happens if I miss a live session?</span>
+                                <i id="faq-icon-2" class="fa-solid fa-chevron-down transition-transform"></i>
+                            </button>
+                            <div id="faq-answer-2" class="hidden px-5 pb-5 text-slate-400 text-sm">
+                                High-definition recorded backups of every class are uploaded to your dashboard within 2 hours, along with teacher annotated PDF notes.
+                            </div>
+                        </div>
+
+                        <div class="rounded-2xl bg-slate-800/60 border border-slate-700 overflow-hidden">
+                            <button onclick="toggleFaq(3)" class="w-full p-5 text-left font-bold text-white flex justify-between items-center">
+                                <span>Are study materials provided in hard copy or PDF?</span>
+                                <i id="faq-icon-3" class="fa-solid fa-chevron-down transition-transform"></i>
+                            </button>
+                            <div id="faq-answer-3" class="hidden px-5 pb-5 text-slate-400 text-sm">
+                                Students enrolled in full-year courses receive printed theory modules and question banks delivered to their home address, plus instant digital PDF access.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- Demo Booking Modal -->
+    <div id="demo-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeDemoModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-full bg-brand-600/20 text-brand-400 flex items-center justify-center text-xl mx-auto mb-2">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Book Free Demo Class</h3>
+                <p class="text-slate-400 text-xs mt-1">Experience 2-way live teaching firsthand with zero commitment.</p>
+            </div>
+            <form onsubmit="handleDemoSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-slate-300 font-semibold mb-1">Student Name</label>
+                    <input type="text" required placeholder="Enter student name" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-300 font-semibold mb-1">Mobile Number</label>
+                    <input type="tel" required placeholder="+91 10-digit number" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-300 font-semibold mb-1">Select Grade / Target</label>
+                    <select class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500">
+                        <option>JEE Main & Advanced 2026</option>
+                        <option>NEET Medical 2026</option>
+                        <option>Class 10 CBSE Boards</option>
+                        <option>Python & Coding Foundations</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-600 to-tealBrand-500 text-white font-bold text-sm shadow-lg">
+                    Confirm Free Demo Slot
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Course Enrollment Modal -->
+    <div id="enroll-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeEnrollModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center mb-6">
+                <span class="text-xs font-bold text-brand-400 uppercase tracking-widest">Enrollment Express</span>
+                <h3 id="enroll-course-title" class="text-xl font-bold text-white mt-1">Course Name</h3>
+                <div id="enroll-course-price" class="text-2xl font-extrabold text-tealBrand-400 mt-1">₹0</div>
+            </div>
+            <form onsubmit="handleEnrollSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-slate-300 font-semibold mb-1">Full Name</label>
+                    <input type="text" required placeholder="Enter student name" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-300 font-semibold mb-1">Email ID</label>
+                    <input type="email" required placeholder="name@domain.com" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-300 font-semibold mb-1">Mobile Number</label>
+                    <input type="tel" required placeholder="+91 10-digit number" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500">
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm shadow-lg">
+                    Proceed to Registration
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Live Class Player Preview Modal -->
+    <div id="live-demo-modal" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-3xl w-full p-6 shadow-2xl relative">
+            <button onclick="closeLiveDemoModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2 z-10">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="mb-4">
+                <span class="bg-red-500/20 text-red-400 text-xs px-2.5 py-1 rounded-full font-bold inline-flex items-center gap-1.5 mb-2">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span> Interactive Virtual Classroom Demo
+                </span>
+                <h3 id="live-modal-title" class="text-xl font-bold text-white">Live Class Preview</h3>
+                <p id="live-modal-instructor" class="text-slate-400 text-xs">Instructor</p>
+            </div>
+            <div class="relative rounded-2xl overflow-hidden bg-slate-950 aspect-video flex items-center justify-center border border-slate-800 mb-4">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=80" class="w-full h-full object-cover opacity-50" alt="Class stream">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                <div class="absolute flex flex-col items-center gap-3 text-center px-4">
+                    <div class="w-16 h-16 rounded-full bg-tealBrand-500/90 text-slate-950 flex items-center justify-center text-2xl shadow-xl">
+                        <i class="fa-solid fa-signal"></i>
+                    </div>
+                    <p class="text-white text-sm font-semibold">Simulated Stream Connected (HD Audio & Whiteboard Ready)</p>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-xs text-slate-400"><i class="fa-solid fa-users mr-1"></i> 342 Students Active</span>
+                <button onclick="closeLiveDemoModal(); openEnrollModal('Live Full Access Pass', '₹29,999')" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs">
+                    Enroll for Full Batch Access
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-slate-800 text-slate-400 text-sm pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
+                <!-- Branding Info -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-tealBrand-500 flex items-center justify-center text-white text-lg font-bold">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <span class="text-2xl font-extrabold text-white">Edu<span class="gradient-text">Excel</span></span>
+                    </div>
+                    <p class="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-sm">
+                        EduExcel Academy is India's leading interactive online coaching institution dedicated to qualifying JEE, NEET, and Board aspirants with top percentile results.
+                    </p>
+                    <!-- Newsletter Signup -->
+                    <div class="pt-2">
+                        <span class="block text-xs font-bold text-slate-200 uppercase mb-2">Subscribe for Free Study Tips</span>
+                        <form onsubmit="handleNewsletter(event)" class="flex gap-2 max-w-sm">
+                            <input type="email" required placeholder="Enter email" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500 flex-grow">
+                            <button type="submit" class="bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all">Join</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Quick Navigation Links -->
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4">Quick Links</h4>
+                    <ul class="space-y-2.5 text-xs">
+                        <li><a href="javascript:void(0)" onclick="navigateTo('home')" class="hover:text-brand-400 transition-colors">Home Overview</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('courses')" class="hover:text-brand-400 transition-colors">All Course Catalog</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('about')" class="hover:text-brand-400 transition-colors">About Our Faculty</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('schedule')" class="hover:text-brand-400 transition-colors">Live Schedule</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('contact')" class="hover:text-brand-400 transition-colors">Contact Support</a></li>
+                    </ul>
+                </div>
+
+                <!-- Course Offerings -->
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4">Top Programs</h4>
+                    <ul class="space-y-2.5 text-xs">
+                        <li><a href="javascript:void(0)" onclick="navigateTo('courses')" class="hover:text-brand-400 transition-colors">JEE Main & Advanced</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('courses')" class="hover:text-brand-400 transition-colors">NEET UG Medical</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('courses')" class="hover:text-brand-400 transition-colors">Class 10 CBSE Board</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('courses')" class="hover:text-brand-400 transition-colors">Python Coding Bootcamp</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('courses')" class="hover:text-brand-400 transition-colors">Class 12 Boards Booster</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social Media & Contact Details -->
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4">Connect With Us</h4>
+                    <p class="text-xs text-slate-400 mb-3">Follow our social channels for daily quiz polls and exam updates.</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="https://facebook.com" target="_blank" class="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-brand-600 flex items-center justify-center transition-all"><i class="fa-brands fa-facebook-f text-sm"></i></a>
+                        <a href="https://twitter.com" target="_blank" class="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-brand-600 flex items-center justify-center transition-all"><i class="fa-brands fa-x-twitter text-sm"></i></a>
+                        <a href="https://instagram.com" target="_blank" class="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-pink-600 flex items-center justify-center transition-all"><i class="fa-brands fa-instagram text-sm"></i></a>
+                        <a href="https://linkedin.com" target="_blank" class="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-blue-600 flex items-center justify-center transition-all"><i class="fa-brands fa-linkedin-in text-sm"></i></a>
+                        <a href="https://youtube.com" target="_blank" class="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-red-600 flex items-center justify-center transition-all"><i class="fa-brands fa-youtube text-sm"></i></a>
+                        <a href="https://whatsapp.com" target="_blank" class="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-emerald-600 flex items-center justify-center transition-all"><i class="fa-brands fa-whatsapp text-sm"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+                <p>&copy; 2026 EduExcel Academy Pvt Ltd. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="javascript:void(0)" class="hover:text-slate-400">Privacy Policy</a>
+                    <a href="javascript:void(0)" class="hover:text-slate-400">Terms of Service</a>
+                    <a href="javascript:void(0)" class="hover:text-slate-400">Refund Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // Current active page state
+        let currentPage = 'home';
+
+        // Initialize SPA Routing
+        function navigateTo(pageId) {
+            currentPage = pageId;
+            
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.add('hidden');
+            });
+
+            // Show selected page
+            const activePage = document.getElementById(`page-${pageId}`);
+            if (activePage) {
+                activePage.classList.remove('hidden');
+            }
+
+            // Update Nav Styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white', 'shadow-md');
+                btn.classList.add('text-slate-300', 'hover:text-white');
+            });
+
+            const currentNavBtn = document.getElementById(`nav-${pageId}`);
+            if (currentNavBtn) {
+                currentNavBtn.classList.remove('text-slate-300', 'hover:text-white');
+                currentNavBtn.classList.add('bg-brand-600', 'text-white', 'shadow-md');
+            }
+
+            // Scroll to top smooth
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mobile Menu Drawer Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.className = 'fa-solid fa-bars text-xl';
+            } else {
+                icon.className = 'fa-solid fa-xmark text-xl';
+            }
+        }
+
+        // Filter Course Catalog
+        function filterCourses(category) {
+            // Update filter buttons UI
+            document.querySelectorAll('.course-filter-btn').forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.className = 'course-filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all bg-brand-600 text-white';
+                } else {
+                    btn.className = 'course-filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700';
+                }
+            });
+
+            // Filter Grid Items
+            document.querySelectorAll('.course-card').forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Filter Timetable Schedule
+        function filterSchedule() {
+            const dayVal = document.getElementById('day-filter').value;
+            const batchVal = document.getElementById('batch-filter').value;
+
+            document.querySelectorAll('.schedule-item').forEach(item => {
+                const dayMatch = (dayVal === 'all' || item.dataset.day === dayVal);
+                const batchMatch = (batchVal === 'all' || item.dataset.batch === batchVal);
+
+                if (dayMatch && batchMatch) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+
+        // Modal Controls
+        function openDemoModal() {
+            document.getElementById('demo-modal').classList.remove('hidden');
+        }
+
+        function closeDemoModal() {
+            document.getElementById('demo-modal').classList.add('hidden');
+        }
+
+        function openEnrollModal(courseName, price) {
+            document.getElementById('enroll-course-title').innerText = courseName;
+            document.getElementById('enroll-course-price').innerText = price;
+            document.getElementById('enroll-modal').classList.remove('hidden');
+        }
+
+        function closeEnrollModal() {
+            document.getElementById('enroll-modal').classList.add('hidden');
+        }
+
+        function openLiveDemoModal(title, instructor) {
+            document.getElementById('live-modal-title').innerText = title;
+            document.getElementById('live-modal-instructor').innerText = `Instructor: ${instructor}`;
+            document.getElementById('live-demo-modal').classList.remove('hidden');
+        }
+
+        function closeLiveDemoModal() {
+            document.getElementById('live-demo-modal').classList.add('hidden');
+        }
+
+        function openSyllabusModal(courseName) {
+            showToast(`Syllabus PDF for "${courseName}" downloaded to your device!`, 'success');
+        }
+
+        // FAQ Toggle
+        function toggleFaq(id) {
+            const answer = document.getElementById(`faq-answer-${id}`);
+            const icon = document.getElementById(`faq-icon-${id}`);
+            answer.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        // Form Handlers
+        function handleDemoSubmit(e) {
+            e.preventDefault();
+            closeDemoModal();
+            showToast('Demo seat reserved! Our counselor will call you shortly.', 'success');
+        }
+
+        function handleEnrollSubmit(e) {
+            e.preventDefault();
+            closeEnrollModal();
+            showToast('Enrollment requested! Redirecting to secure payment portal...', 'success');
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            document.getElementById('contact-form').reset();
+            showToast('Message sent! Our support team will respond within 24 hours.', 'success');
+        }
+
+        function handleNewsletter(e) {
+            e.preventDefault();
+            e.target.reset();
+            showToast('Thank you for subscribing to EduExcel newsletters!', 'info');
+        }
+
+        // Dynamic Toast Notification System
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgBg = 'bg-slate-800 border-brand-500 text-white';
+            let icon = 'fa-circle-info text-brand-400';
+
+            if (type === 'success') {
+                bgBg = 'bg-slate-800 border-tealBrand-500 text-white';
+                icon = 'fa-circle-check text-tealBrand-400';
+            }
+
+            toast.className = `p-4 rounded-2xl border shadow-2xl flex items-center gap-3 text-sm font-semibold pointer-events-auto transition-all transform translate-y-5 opacity-0 ${bgBg}`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-lg"></i> <span>${message}</span>`;
+
+            container.appendChild(toast);
+
+            // Animate In
+            setTimeout(() => {
+                toast.classList.remove('translate-y-5', 'opacity-0');
+            }, 50);
+
+            // Animate Out & Remove
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-5');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 4000);
+        }
+
+        // Page Load Init
+        window.onload = function() {
+            navigateTo('home');
+        };
+    </script>
+</body>
+</html>
