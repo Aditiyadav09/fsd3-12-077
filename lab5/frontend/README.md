@@ -1,16 +1,19 @@
-# React + Vite
+steps i did for frontend folder:-
+# React using vite
+1. cd lab5
+2. cd frontend
+3. npm create vite@latest
+4. app.jsx. (deleted prev content)
+5. app.jsx(made function and exported it)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+ # React Component 
+ 1. js function that must return html contents 
+ 2. file msut be saved with .jsx
+ 3. filename must start with captital letter 
+ eg. App,Book,User,Product,Productlist
+ 4. component can be called as html tags 
+ eg <App/>,<Book/>,<User/>,<Product/>,<ProductList/>
+ 5. must be closed during rendering
+ 
