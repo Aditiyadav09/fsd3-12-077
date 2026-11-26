@@ -1,3 +1,5 @@
+import Mybutton from "../Mybutton";
+
 const User = () => {
   const data = {
     name: "Ramesh Mishra",
@@ -44,12 +46,13 @@ function App() {
   ];
 
   return (
-    <>
-      <h1>Welcome to React</h1>
-      <User />
-      <Book name="let Us c" author="Yashwant Kanitkar" price="355" />
-      <Book {...bookData} />
-    </>
+     <>
+    {/* //   <h1>Welcome to React</h1>
+    //   <User />
+    //   <Book name="let Us c" author="Yashwant Kanitkar" price="355" />
+    //   <Book {...bookData} /> */}
+    <Mybutton/>
+     </>
   );
 }
 
